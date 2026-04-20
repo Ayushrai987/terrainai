@@ -7,6 +7,7 @@ from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from transformers import SegformerForSemanticSegmentation
+import gdown
 
 app = FastAPI(title="Terrain AI")
 app.add_middleware(
@@ -20,6 +21,19 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 from backend.class_map import CLASSES, NUM_CLASSES
 
+# ✅ Auto-download model if not present
+MODEL_PATH = os.path.join(BASE_DIR, 'models', 'best_model.pth')
+
+if not os.path.exists(MODEL_PATH):
+    os.makedirs(os.path.join(BASE_DIR, 'models'), exist_ok=True)
+    print("Downloading model from Google Drive...")
+    gdown.download(
+        "https://drive.google.com/uc?id=1toep8CG7nZ0mgC-DsNlDbJADEYbOOCko",
+        MODEL_PATH,
+        quiet=False
+    )
+    print("Model downloaded successfully!")
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Loading model on {device}...")
 
@@ -27,7 +41,7 @@ model = SegformerForSemanticSegmentation.from_pretrained(
     "nvidia/mit-b2", num_labels=16, ignore_mismatched_sizes=True)
 
 checkpoint = torch.load(
-    os.path.join(BASE_DIR, 'models', 'best_model.pth'),
+    MODEL_PATH,
     map_location=device, weights_only=False)
 
 if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint:
