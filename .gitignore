@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+
+# Data (too large)
+data/
+
+# Large model files (keep only best)
+models/epoch_10.pth
+models/epoch_20.pth
+models/epoch_30.pth
+models/terrain.onnx
+
+# Node
+frontend/node_modules/
+terrain-mapper-main/node_modules/
+frontend/.vercel/
+frontend/dist/
+
+# Misc
+*.zip
+notepad
+output_mask.png
+output_overlay.png
+train.py
+save_result.py
+generate_visuals.py
+
+models/best_model.pth
