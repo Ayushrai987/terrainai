@@ -3,10 +3,11 @@ uvicorn==0.30.0
 python-multipart==0.0.9
 torch==2.11.0
 torchvision
-transformers==4.40.0
+transformers==4.44.0
+tokenizers==0.19.1
 opencv-python-headless==4.9.0.80
 numpy==1.26.4
-Pillow==10.4.0
+Pillow
 gdown==5.2.0
 timm
-accelerate
+accelerate==0.34.0
